@@ -2,11 +2,11 @@ var express = require("express");
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-app.use(express.static("../programming-3-main"));
+app.use(express.static("../prog-3"));
 app.get("/", function (req, res) {
    res.redirect("index.html");
 });
-server.listen(3000, function () {
+server.listen(3001, function () {
    console.log("App is running on port 3000");
 });
 
@@ -26,8 +26,8 @@ grassEaterArr = []
 predatorArr = []
 predatorEaterArr = []
 WaterArr = []
-prEaEaterArr= []
-grassCount=0
+prEaEaterArr = []
+grassEaten = 0
 
 var n = 15
 var m = 15
@@ -57,8 +57,7 @@ function createGame() {
       for (var x = 0; x < matrix[y].length; ++x) {
          if (matrix[y][x] === 1) {
             var gr = new Grass(x, y, 1);
-            grassArr.push(gr);
-            grassCount++
+            grassArr.push(gr)
          }
          else if (matrix[y][x] === 2) {
             var grEa = new GrassEater(x, y, 1);
@@ -104,6 +103,8 @@ function drawGame() {
       prEaEaterArr[i].eat();
    }
    io.emit("matrix", matrix)
+   io.emit("grassEaten", grassEaten)
+
 }
 
 createGame()
@@ -114,7 +115,7 @@ function startGame() {
    clearInterval(intervalID)
    createGame()
    intervalID = setInterval(() => {
-      drawGame()
+      drawGame()  
    }, 200)
 }
 
@@ -122,6 +123,3 @@ io.on("connection", (socket) => {
    socket.emit("matrix", matrix)
    startGame()
 })
-
-
-        

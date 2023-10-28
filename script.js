@@ -4,8 +4,11 @@ var n = 15
 var m = 15
 var side = 60;
 
+const grCount = document.getElementById("grCount")
+const grEaten = document.getElementById("grEaten")
+
 function setup() {
-    frameRate(1);
+    frameRate(5);
     createCanvas(n * side, m * side);
     background('#acacac');
 }
@@ -60,6 +63,8 @@ winterBtn.addEventListener("click", function() {
     seasons = "Winter"
     console.clear();
     console.log("It's WINTER")
+    frameRate(1);
+    
 })
 const summerBtn = document.getElementById("Summer")
 summerBtn.addEventListener("click", function() {
@@ -78,7 +83,13 @@ autmnBtn.addEventListener("click", function() {
     seasons = "Autmn"
     console.clear();
     console.log("It's AUTMN")
+    frameRate(7);
+    
 })
 
 console.log("choose season")
 socket.on("matrix", drawGame)
+
+socket.on("grassEaten", (grassEaten) => {
+    grEaten.innerText = "Grass Eaten count:" + grassEaten
+})
